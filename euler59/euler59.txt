@@ -1,0 +1,70 @@
+
+ALPHABET = "abcdefghijklmnopqrstuvwxyz"
+
+def gen_keys():
+    keys = []
+    for i in ALPHABET:
+        for j in ALPHABET:
+            for k in ALPHABET:
+                temp_key = i+j+k
+                keys.append(temp_key)
+
+    return keys
+
+def try_keys(keys, encrypted):
+    for key in keys:
+        decrypted = ""
+        temp_key = key
+        while(len(encrypted) > len(temp_key)):
+            temp_key += key
+
+        for i in range(len(encrypted)):
+            decrypted += chr(ord(temp_key[i]) ^ encrypted[i])
+
+        if check_string(decrypted):
+            print(key + ": ")
+            print(decrypted)
+            print("----------------------------")
+            
+def do_it(key, encrypted):
+    decrypted = ""
+    temp_key = key
+    while(len(encrypted) > len(temp_key)):
+        temp_key += key
+        
+    for i in range(len(encrypted)):
+        decrypted += chr(ord(temp_key[i]) ^ encrypted[i])
+
+    value = 0
+    for c in decrypted:
+        value += ord(c)
+        
+    print(decrypted)
+    print("Here is the answer: " + str(value))
+    
+def check_string(temp):
+    for c in temp.lower():
+        if c not in ALPHABET + " ,.'":
+            return False
+    return True
+
+def get_frequencies(encrypted):
+    freqs = [0] * 200
+    for c in encrypted:
+        freqs[ord(c)] += 1
+    print freqs
+        
+def main():
+    keys = gen_keys()
+    
+    encrypted = raw_input()
+    encrypted = encrypted.split(',')
+    for i in range(len(encrypted)):
+        encrypted[i] = int(encrypted[i])
+
+    try_keys(keys, encrypted[:12])
+#    do_it('exp', encrypted)
+    
+    
+if __name__ == "__main__":
+    main()
